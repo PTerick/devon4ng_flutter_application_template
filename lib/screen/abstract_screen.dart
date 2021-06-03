@@ -19,7 +19,7 @@ class ScreenContainer extends StatelessWidget {
       if (MediaQuery.of(context).size.width >= 600) {
         return 1536;
       } else {
-        return 600;
+        return 300;
       }
     }
   }
