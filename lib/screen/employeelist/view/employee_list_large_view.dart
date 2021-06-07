@@ -23,12 +23,14 @@ class EmployeeListLargeView extends StatefulWidget {
 class _ScreenState
     extends AbstractState<EmployeeListBloc, EmployeeListLargeView> {
   late List<EmployeeListContentResponseDto> _list;
-  int id = 0;
+  late int id;
 
   @override
   void initState() {
     super.initState();
     getBloc!.add(RetrieveEmployeeListBlocEvent());
+    //id initialized at 0
+    id = 0;
   }
 
   @override
@@ -78,6 +80,7 @@ class _ScreenState
                   }),
             ),
             Expanded(
+              // this is the widget container with the id index
               child: (Detail(provideBloc(), state.data.content[id], state)),
             ),
           ],
@@ -123,7 +126,8 @@ class _ScreenState
             alignment: Alignment.topRight,
             child: ListTile(
               onTap: () => {
-                _selectItem(context, provideBloc(), item, _list),
+                //this ontap calls _selectItem
+                _selectItem(context, provideBloc(), item, _list, state),
               },
               leading: Icon(Icons.account_circle),
               trailing: Icon(Icons.comment),
@@ -138,11 +142,13 @@ class _ScreenState
     );
   }
 
+//this retrieves the selected item index and saves it in id, but it doesn't change it overall even refreshing the widget
   _selectItem(
       BuildContext context,
       EmployeeListBloc bloc,
       EmployeeListContentResponseDto item,
-      List<EmployeeListContentResponseDto> list) {
+      List<EmployeeListContentResponseDto> list,
+      AbstractBlocState state) {
     id = list.indexOf(item);
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => super.widget));
